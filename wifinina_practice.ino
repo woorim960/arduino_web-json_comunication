@@ -80,7 +80,7 @@ void setup() {
     // HTTP 요청
     client.println("POST /arduino HTTP/1.1");         // 요청 메소드와 경로, 통신 프로토콜 정의한다.
     client.println("Cache-Control: no-cache");
-    client.println("Host: 192.168.200.133:3000");     // 호스트로 서버의 IP와 PORT를 적어준다.
+    client.println("Host: ec2-3-34-207-199.ap-northeast-2.compute.amazonaws.com");     // 호스트로 서버의 IP와 PORT를 적어준다.
     client.println("User-Agent: Arduino");            // 요청한 에이전트
     client.print("Content-Type: application/json");   // 데이터 전송 유형 (JSON 형식)
     client.println("Connection: close");
@@ -96,11 +96,13 @@ void loop() {
 
   // 서버 데이터가 저장될 변수 선언
   String receiveData = "";
-
+  char data = "";
+  
   // 서버에서 수신 가능한 바이트가 있으면 실행
   while (client.available()) {
     // JSON 데이터 수신
-    char data = client.read();  // 데이터 수신 (1바이트 단위로 수신)
+    data = client.read();  // 데이터 수신 (1바이트 단위로 수신)
+    Serial.print(data);
     receiveData += data;        // 1바이트 단위의 수신 데이터를 사용가능한 형식으로 바꾸기 위해 문자열 연산  
 
     // 수신 데이터 중 헤더 부분을 제거하기 위함 => 수신하고자 하는 데이터는 JSON 객체이기 때문
@@ -112,7 +114,7 @@ void loop() {
   // 서버에서 수신한 데이터를 전부 받았으면 실행
   if (receiveData != NULL) {
     // 서버 데이터(JSON)를 
-    json = getJSON(receiveData);
+    json = getParsedJSON(receiveData);
 
     // 수신 데이터를 파싱하여 각 변수에 저장
     const char* sensor = json["sensor"];
@@ -146,7 +148,7 @@ void loop() {
 
  @ 반환 타 : JSON
 */
-DynamicJsonDocument getJSON(String receiveData) {
+DynamicJsonDocument getParsedJSON(String receiveData) {
   
   // 수신 데이터(JSON)를 아두이노에서 사용할 수 있는 형태로 변환
   DeserializationError error = deserializeJson(json, receiveData);
