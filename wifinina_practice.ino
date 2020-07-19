@@ -113,7 +113,7 @@ void loop() {
   
   // 서버에서 수신한 데이터를 전부 받았으면 실행
   if (receiveData != NULL) {
-    // 서버 데이터(JSON)를 
+    // 서버 데이터(JSON)를 아두이노에서 원하는 형태로 파싱하여 받아온다.
     json = getParsedJSON(receiveData);
 
     // 수신 데이터를 파싱하여 각 변수에 저장
