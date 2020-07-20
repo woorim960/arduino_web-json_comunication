@@ -27,7 +27,7 @@ DynamicJsonDocument json(200);
 // WiFi 상태
 int status = WL_IDLE_STATUS;
 
-// 연결하려는 서버의 IP 주소와 포트로 이더넷 클라이언트 라이브러리를 초기화. HTTP의 경우 포트 80이 기본 값
+// 클라이언트 인스턴스 생성
 WiFiClient client;
 
 /* ************************************************************************************ */
@@ -142,11 +142,11 @@ void loop() {
 }
 
 /*
- @ getJSONgetJSON : JSON 객체 반환 함수
+ @ getParsedJSON : JSON 객체 반환 함수
  @ 파라미터
  @ receiveData :: JSON 객체로 변환할 문자열
 
- @ 반환 타 : JSON
+ @ 반환 타입 : JSON
 */
 DynamicJsonDocument getParsedJSON(String receiveData) {
   
